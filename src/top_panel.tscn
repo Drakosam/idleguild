@@ -1,0 +1,77 @@
+[gd_scene format=2]
+
+[node name="Panel" type="Panel"]
+margin_right = 600.0
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_bottom = 1.0
+margin_left = -1.05945
+margin_top = -0.168571
+margin_right = 58.9406
+margin_bottom = -0.168571
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 18.0
+margin_right = 53.0
+margin_bottom = 32.0
+text = "Gold ::"
+align = 1
+valign = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 7.44055
+margin_top = -0.168571
+margin_right = 67.4406
+margin_bottom = -0.168571
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer2"]
+margin_left = 7.0
+margin_top = 18.0
+margin_right = 53.0
+margin_bottom = 32.0
+text = "Mana ::"
+align = 1
+valign = 1
+
+[node name="gold_value" type="Label" parent="."]
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 60.0
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mana_value" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 67.4406
+margin_top = -1.05946
+margin_right = 7.44055
+margin_bottom = -1.05946
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 50.0

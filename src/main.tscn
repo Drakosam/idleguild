@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://top_panel.tscn" type="PackedScene" id=1]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -63,10 +65,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Button" type="Button" parent="CanvasLayer/Panel/herros_panel"]
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -40.0
+margin_bottom = 50.0
 text = "add_heros"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -134,6 +134,12 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.141176, 0.247059, 0, 1 )
+
+[node name="Panel" parent="CanvasLayer/Panel2" instance=ExtResource( 1 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
 
 [connection signal="button_up" from="CanvasLayer/Panel/herros_panel/Button" to="." method="_on_add_heros"]
 [connection signal="button_up" from="CanvasLayer/new_heros_tab/Button" to="." method="_on_go_back_to_world"]
