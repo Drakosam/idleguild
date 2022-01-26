@@ -1,14 +1,43 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+var show_hero_tab = false
+
+func _ready():
+	_show_tab('world')
+
+func _on_add_heros():
+	_show_tab('add_hero')
+
+func _hide_all_tabs():
+	$CanvasLayer/world_map.visible = false
+	$CanvasLayer/new_heros_tab.visible = false
+
+func _show_tab(tab_name):
+	_hide_all_tabs()
+	if(tab_name=='world'):
+		$CanvasLayer/world_map.visible = true
+	elif tab_name == 'add_hero':
+		$CanvasLayer/new_heros_tab.visible = true
+
+func _on_go_back_to_world():
+	_show_tab('world')
+"
 
 [node name="Node2D" type="Node2D"]
+script = SubResource( 1 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.12244
-margin_right = 1.12244
+margin_left = 3.36731
+margin_top = 2.24492
+margin_right = 3.36731
+margin_bottom = 2.24493
 color = Color( 0.439216, 0.439216, 0.439216, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -21,17 +50,90 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Panel"]
 anchor_right = 1.0
-margin_bottom = 40.0
-text = "zzz"
+anchor_bottom = 1.0
+color = Color( 0.521569, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button2" type="Button" parent="CanvasLayer/Panel"]
+[node name="herros_panel" type="Panel" parent="CanvasLayer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel/herros_panel"]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -40.0
-text = "xxxxx"
+text = "add_heros"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="world_map" type="Panel" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 300.0
+margin_top = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/world_map"]
+margin_left = 165.49
+margin_top = 230.225
+margin_right = 343.49
+margin_bottom = 300.225
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "sdasdasdasdasdas"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="new_heros_tab" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 300.0
+margin_top = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/new_heros_tab"]
+margin_left = 244.697
+margin_top = 286.228
+margin_right = 284.697
+margin_bottom = 300.228
+text = "Add new heros"
+
+[node name="Button" type="Button" parent="CanvasLayer/new_heros_tab"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -130.707
+margin_top = -40.0
+margin_right = -0.707092
+text = "go back to World"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_left = 300.0
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.141176, 0.247059, 0, 1 )
+
+[connection signal="button_up" from="CanvasLayer/Panel/herros_panel/Button" to="." method="_on_add_heros"]
+[connection signal="button_up" from="CanvasLayer/new_heros_tab/Button" to="." method="_on_go_back_to_world"]
