@@ -12,6 +12,7 @@ signal add_new_hero(new_hero)
 var new_hero = null
 var selected = -1
 
+
 func _ready():
 	for _hero in hero_arch_type:
 		$MenuButton.get_popup().add_item(_hero)
@@ -26,6 +27,7 @@ func _on_select_archetype(arg):
 	
 
 func _on_add_hero_button_up():
+	new_hero.hero_name = $LineEdit.text
 	emit_signal('add_new_hero',new_hero)
 
 
@@ -36,7 +38,7 @@ func _on_return_to_world_button_up():
 func reset_new_hero():
 	$MenuButton.text = hero_arch_type[0]	
 	new_hero = NewHero.instance()
-	
+	$LineEdit.text = ''
 	new_hero.set_up_arch_type( hero_arch_type[0] )
 "
 
@@ -91,6 +93,21 @@ margin_right = 300.0
 margin_bottom = 40.0
 text = "mercenary"
 flat = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_top = 55.0
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Name ::"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 59.0
+margin_top = 46.5858
+margin_right = 294.0
+margin_bottom = 79.5858
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -45,6 +45,7 @@ func _on_new_hero_componennt_add_new_hero(new_hero):
 	
 	var new_item =  NewHeroShort.instance()
 	new_item.set_class(new_hero.hero_class)
+	new_item.set_name(new_hero.hero_name)
 	
 	$CanvasLayer/Panel/herros_panel/ScrollContainer/hero_list_short.add_child(new_item)
 "
