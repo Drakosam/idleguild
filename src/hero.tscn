@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+export var arch_type = ''
+export var hero_name = 'Name'
+export var hero_class = ''
+export var id = -1
+
+func _ready():
+	pass # Replace with function body.
+
+func set_up_arch_type(arch_name):
+	arch_type = arch_name
+	hero_class = arch_name
+"
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )

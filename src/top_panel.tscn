@@ -41,7 +41,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="PanelContainer2"]
 margin_left = 7.0
 margin_top = 18.0
-margin_right = 53.0
+margin_right = 53.0001
 margin_bottom = 32.0
 text = "Mana ::"
 align = 1

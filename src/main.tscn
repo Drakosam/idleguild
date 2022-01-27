@@ -1,21 +1,30 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://top_panel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://new_hero.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
+const NewHeroShort = preload(\"res://short_hero.tscn\")
+
 var show_hero_tab = false
+var hero_list = []
+
 
 func _ready():
 	_show_tab('world')
 
+
 func _on_add_heros():
+	$CanvasLayer/new_heros_tab/new_hero_componennt.reset_new_hero()
 	_show_tab('add_hero')
+
 
 func _hide_all_tabs():
 	$CanvasLayer/world_map.visible = false
 	$CanvasLayer/new_heros_tab.visible = false
+
 
 func _show_tab(tab_name):
 	_hide_all_tabs()
@@ -24,8 +33,20 @@ func _show_tab(tab_name):
 	elif tab_name == 'add_hero':
 		$CanvasLayer/new_heros_tab.visible = true
 
-func _on_go_back_to_world():
+
+func _on_Panel_go_back_to_world():
 	_show_tab('world')
+
+
+func _on_new_hero_componennt_add_new_hero(new_hero):
+	_show_tab('world')
+	new_hero.id = hero_list.size()
+	hero_list.append(new_hero)
+	
+	var new_item =  NewHeroShort.instance()
+	new_item.set_class(new_hero.hero_class)
+	
+	$CanvasLayer/Panel/herros_panel/ScrollContainer/hero_list_short.add_child(new_item)
 "
 
 [node name="Node2D" type="Node2D"]
@@ -45,6 +66,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Panel2" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_left = 300.0
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.141176, 0.247059, 0, 1 )
+
+[node name="Panel" parent="CanvasLayer/Panel2" instance=ExtResource( 1 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
+
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 anchor_bottom = 1.0
 margin_right = 300.0
@@ -63,11 +103,43 @@ __meta__ = {
 [node name="herros_panel" type="Panel" parent="CanvasLayer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Panel/herros_panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.943863
+margin_bottom = -0.943848
+color = Color( 0, 0.0352941, 0.27451, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button" type="Button" parent="CanvasLayer/Panel/herros_panel"]
 anchor_right = 1.0
 margin_bottom = 50.0
 text = "add_heros"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Panel/herros_panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hero_list_short" type="VBoxContainer" parent="CanvasLayer/Panel/herros_panel/ScrollContainer"]
+margin_right = 300.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -102,44 +174,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/new_heros_tab"]
-margin_left = 244.697
-margin_top = 286.228
-margin_right = 284.697
-margin_bottom = 300.228
-text = "Add new heros"
-
-[node name="Button" type="Button" parent="CanvasLayer/new_heros_tab"]
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="new_hero_componennt" parent="CanvasLayer/new_heros_tab" instance=ExtResource( 2 )]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -130.707
-margin_top = -40.0
-margin_right = -0.707092
-text = "go back to World"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Panel2" type="Panel" parent="CanvasLayer"]
-anchor_right = 1.0
-margin_left = 300.0
-margin_bottom = 50.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Panel2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.141176, 0.247059, 0, 1 )
-
-[node name="Panel" parent="CanvasLayer/Panel2" instance=ExtResource( 1 )]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_top = -1.88775
 margin_right = 0.0
-margin_bottom = 0.0
+margin_bottom = -1.88776
 
 [connection signal="button_up" from="CanvasLayer/Panel/herros_panel/Button" to="." method="_on_add_heros"]
-[connection signal="button_up" from="CanvasLayer/new_heros_tab/Button" to="." method="_on_go_back_to_world"]
+[connection signal="add_new_hero" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_new_hero_componennt_add_new_hero"]
+[connection signal="go_back_to_world" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_Panel_go_back_to_world"]

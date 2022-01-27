@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+func _ready():
+	pass # Replace with function body.
+
+func set_name(n_name):
+	$Label_Name.text = n_name
+	
+func set_class(n_class):
+	$Label_Class.text = n_class
+"
+
+[node name="short_hero" type="Panel"]
+anchor_right = 1.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 80 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Name ::"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_top = 14.0
+margin_right = 40.0
+margin_bottom = 14.0
+text = "class ::"
+
+[node name="Label_Name" type="Label" parent="."]
+margin_left = 60.0
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Name "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Class" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 14.0
+margin_right = 40.0
+margin_bottom = 14.0
+text = "class"
+__meta__ = {
+"_edit_use_anchors_": false
+}

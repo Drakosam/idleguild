@@ -1,0 +1,99 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+const NewHero = preload(\"res://hero.tscn\")
+const hero_arch_type = ['mercenary','vagabond','scholar']
+
+signal go_back_to_world()
+signal add_new_hero(new_hero)
+
+var new_hero = null
+var selected = -1
+
+func _ready():
+	for _hero in hero_arch_type:
+		$MenuButton.get_popup().add_item(_hero)
+	$MenuButton.text = hero_arch_type[0]	
+	$MenuButton.get_popup().connect(\"id_pressed\",self, \"_on_select_archetype\")
+
+
+func _on_select_archetype(arg):
+	selected = arg
+	$MenuButton.text = hero_arch_type[selected]
+	new_hero.set_up_arch_type( hero_arch_type[selected] )
+	
+
+func _on_add_hero_button_up():
+	emit_signal('add_new_hero',new_hero)
+
+
+func _on_return_to_world_button_up():
+	emit_signal('go_back_to_world')
+
+
+func reset_new_hero():
+	$MenuButton.text = hero_arch_type[0]	
+	new_hero = NewHero.instance()
+	
+	new_hero.set_up_arch_type( hero_arch_type[0] )
+"
+
+[node name="Panel" type="Panel"]
+margin_right = 647.0
+margin_bottom = 596.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.7818
+margin_top = -0.8909
+margin_right = 1.7818
+margin_bottom = -0.890869
+rect_pivot_offset = Vector2( 409.393, 320.53 )
+color = Color( 0.14902, 0, 0.231373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="return_to_world" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -130.0
+margin_top = -40.0
+text = "Back to World"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="add_hero" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -260.0
+margin_top = -40.0
+margin_right = -130.0
+text = "Add Hero"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="."]
+margin_right = 300.0
+margin_bottom = 40.0
+text = "mercenary"
+flat = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="button_up" from="return_to_world" to="." method="_on_return_to_world_button_up"]
+[connection signal="button_up" from="add_hero" to="." method="_on_add_hero_button_up"]
