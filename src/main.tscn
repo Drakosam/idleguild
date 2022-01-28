@@ -33,16 +33,19 @@ func _on_Panel_go_back_to_world():
 
 
 func _on_new_hero_componennt_add_new_hero(new_hero):
-	_show_tab('world')
-	new_hero.id = hero_list.size()
-	hero_list.append(new_hero)
-	$CanvasLayer/Panel/HeroDesc.add_hero_short_desc_item(new_hero)
+	_on_Panel_go_back_to_world()
+	_add_hero_proc(new_hero)
 	
-
 
 func _on_HeroDesc_show_add_new_hero_panel():
 	$CanvasLayer/new_heros_tab/new_hero_componennt.reset_new_hero()
 	_show_tab('add_hero')
+
+
+func _add_hero_proc(new_hero):
+	new_hero.id = hero_list.size()
+	hero_list.append(new_hero)
+	$CanvasLayer/Panel/HeroDesc.add_hero_short_desc_item(new_hero)
 "
 
 [node name="Node2D" type="Node2D"]
