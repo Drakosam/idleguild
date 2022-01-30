@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends TabContainer
+
+const Promotion_job = preload(\"res://promotion_jobs.tscn\")
+
+func _ready():
+	pass # Replace with function body.
+
+
+#func _on_Button_button_up():
+#	var xxx = Tabs.new()
+#	xxx.name = 'xxxxx'
+#	var promotion_job = Promotion_job.instance()
+#	xxx.add_child(promotion_job)
+#	add_child(xxx)
+	
+	
+"
+
+[node name="Panel" type="TabContainer"]
+margin_right = 804.0
+margin_bottom = 606.0
+tab_align = 0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Odd" type="Tabs" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Label" type="Label" parent="Odd"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 1.00068, 1 )
+text = "dasdasdasdadasdasdas"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exploration" type="Tabs" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -760.0
+margin_bottom = -550.0
+
+[node name="Label" type="Label" parent="Exploration"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "iiiiiiiiiiiiiiiii"

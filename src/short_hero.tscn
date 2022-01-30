@@ -19,7 +19,7 @@ func set_status(n_status):
 [node name="short_hero" type="Panel"]
 anchor_right = 1.0
 margin_bottom = 100.0
-rect_min_size = Vector2( 0, 80 )
+rect_min_size = Vector2( 0, 100 )
 script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
