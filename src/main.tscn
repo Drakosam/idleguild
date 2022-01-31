@@ -3,13 +3,14 @@
 [ext_resource path="res://top_panel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://new_hero.tscn" type="PackedScene" id=2]
 [ext_resource path="res://hero_short_panel.tscn" type="PackedScene" id=3]
-[ext_resource path="res://world_jobs.tscn" type="PackedScene" id=4]
+[ext_resource path="res://world_actions.tscn" type="PackedScene" id=4]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
 var show_hero_tab = false
 var hero_list = []
+var hero_short_list = []
 
 
 func _ready():
@@ -36,6 +37,7 @@ func _on_Panel_go_back_to_world():
 func _on_new_hero_componennt_add_new_hero(new_hero):
 	_on_Panel_go_back_to_world()
 	_add_hero_proc(new_hero)
+	$CanvasLayer/world_map/World.setup_hero_list(hero_list)
 	
 
 func _on_HeroDesc_show_add_new_hero_panel():
@@ -46,7 +48,14 @@ func _on_HeroDesc_show_add_new_hero_panel():
 func _add_hero_proc(new_hero):
 	new_hero.id = hero_list.size()
 	hero_list.append(new_hero)
-	$CanvasLayer/Panel/HeroDesc.add_hero_short_desc_item(new_hero)
+	hero_short_list.append(
+		$CanvasLayer/Panel/HeroDesc.add_hero_short_desc_item(new_hero)
+	)
+	
+
+func _on_Status_refresh_timeout():
+	for item in hero_short_list:
+		item.set_status(hero_list[item.get_index()].get_status())
 "
 
 [node name="Node2D" type="Node2D"]
@@ -107,12 +116,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" parent="CanvasLayer/world_map" instance=ExtResource( 4 )]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 1.0
-margin_right = 0.0
-margin_bottom = 0.0
+[node name="World" parent="CanvasLayer/world_map" instance=ExtResource( 4 )]
 
 [node name="new_heros_tab" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -131,6 +135,11 @@ margin_top = -1.88775
 margin_right = 0.0
 margin_bottom = -1.88776
 
+[node name="Status_refresh" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
 [connection signal="show_add_new_hero_panel" from="CanvasLayer/Panel/HeroDesc" to="." method="_on_HeroDesc_show_add_new_hero_panel"]
 [connection signal="add_new_hero" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_new_hero_componennt_add_new_hero"]
 [connection signal="go_back_to_world" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_Panel_go_back_to_world"]
+[connection signal="timeout" from="Status_refresh" to="." method="_on_Status_refresh_timeout"]

@@ -2,6 +2,7 @@
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Panel
+var index = -1
 
 func _ready():
 	pass # Replace with function body.
@@ -14,6 +15,12 @@ func set_class(n_class):
 
 func set_status(n_status):
 	$Label_status.text = n_status
+	
+func set_index(new_index):
+	index = new_index
+
+func get_index():
+	return index
 "
 
 [node name="short_hero" type="Panel"]
@@ -57,9 +64,9 @@ __meta__ = {
 
 [node name="Label_Class" type="Label" parent="."]
 margin_left = 60.0
-margin_top = 20.0
-margin_right = 40.0
-margin_bottom = 14.0
+margin_top = 19.1091
+margin_right = 92.0
+margin_bottom = 33.1091
 text = "class"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -92,7 +99,7 @@ margin_left = 65.0
 margin_top = 40.0
 margin_right = 40.0
 margin_bottom = 14.0
-text = "Idle"
+text = "start"
 __meta__ = {
 "_edit_use_anchors_": false
 }

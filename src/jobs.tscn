@@ -1,0 +1,95 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://task_tile.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+
+var hero_list = []
+
+
+func _ready():
+	pass
+
+
+func setup_hero_list(new_list):
+	hero_list = new_list
+	update_hero_list()
+
+
+
+func update_hero_list():
+	$ScrollContainer/VBoxContainer/Odd_job_1.setup_hero_list(hero_list)
+	$ScrollContainer/VBoxContainer/Odd_job_2.setup_hero_list(hero_list)
+	$ScrollContainer/VBoxContainer/Odd_job_3.setup_hero_list(hero_list)
+	$ScrollContainer/VBoxContainer/Odd_job_4.setup_hero_list(hero_list)
+	$ScrollContainer/VBoxContainer/Odd_job_5.setup_hero_list(hero_list)
+
+
+
+func _on_Odd_job_refresh_heros(id_hero):
+	print(id_hero)
+	$ScrollContainer/VBoxContainer/Odd_job_1.refresh_heros_assigned(id_hero)
+	$ScrollContainer/VBoxContainer/Odd_job_2.refresh_heros_assigned(id_hero)
+	$ScrollContainer/VBoxContainer/Odd_job_3.refresh_heros_assigned(id_hero)
+	$ScrollContainer/VBoxContainer/Odd_job_4.refresh_heros_assigned(id_hero)
+	$ScrollContainer/VBoxContainer/Odd_job_5.refresh_heros_assigned(id_hero)
+"
+
+[node name="Odd_jobs" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 788.0
+margin_bottom = 610.0
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_right = 788.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "Odd Jobs"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Odd_job_1" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 44.0
+margin_right = 788.0
+margin_bottom = 154.0
+
+[node name="Odd_job_2" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 158.0
+margin_right = 788.0
+margin_bottom = 268.0
+
+[node name="Odd_job_3" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 272.0
+margin_right = 788.0
+margin_bottom = 382.0
+
+[node name="Odd_job_4" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 386.0
+margin_right = 788.0
+margin_bottom = 496.0
+
+[node name="Odd_job_5" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 500.0
+margin_right = 788.0
+margin_bottom = 610.0
+
+[connection signal="refresh_heros" from="ScrollContainer/VBoxContainer/Odd_job_1" to="." method="_on_Odd_job_refresh_heros"]
+[connection signal="refresh_heros" from="ScrollContainer/VBoxContainer/Odd_job_2" to="." method="_on_Odd_job_refresh_heros"]
+[connection signal="refresh_heros" from="ScrollContainer/VBoxContainer/Odd_job_3" to="." method="_on_Odd_job_refresh_heros"]
+[connection signal="refresh_heros" from="ScrollContainer/VBoxContainer/Odd_job_4" to="." method="_on_Odd_job_refresh_heros"]
+[connection signal="refresh_heros" from="ScrollContainer/VBoxContainer/Odd_job_5" to="." method="_on_Odd_job_refresh_heros"]

@@ -7,6 +7,7 @@ export var arch_type = ''
 export var hero_name = 'Name'
 export var hero_class = ''
 export var id = -1
+export var status = \"Idle\"
 
 func _ready():
 	pass # Replace with function body.
@@ -14,6 +15,12 @@ func _ready():
 func set_up_arch_type(arch_name):
 	arch_type = arch_name
 	hero_class = arch_name
+
+func get_status():
+	return status
+
+func set_status(new_status):
+	status = new_status
 "
 
 [node name="Node" type="Node"]

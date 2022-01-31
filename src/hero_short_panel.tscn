@@ -16,7 +16,9 @@ func add_hero_short_desc_item(new_hero):
 	var new_item =  NewHeroShort.instance()
 	new_item.set_class(new_hero.hero_class)
 	new_item.set_name(new_hero.hero_name)
+	new_item.set_index(new_hero.id)
 	$ScrollContainer/VBoxContainer.add_child(new_item)
+	return new_item
 
 
 func _on_Button_button_up():
