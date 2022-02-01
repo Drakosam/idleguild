@@ -6,6 +6,8 @@
 script/source = "extends TabContainer
 
 var hero_list = []
+signal update_hero(hero_id, reassigne)
+
 
 func _ready():
 	pass # Replace with function body.
@@ -13,7 +15,14 @@ func _ready():
 
 func setup_hero_list(new_list):
 	hero_list = new_list
-	$Jobs/Odd_jobs.setup_hero_list(new_list)
+	$Jobs/Jobs.setup_hero_list(new_list)
+	
+func time_progress():
+	$Jobs/Jobs.time_progress()
+
+
+func _on_Jobs_update_hero(hero_id, reassigne):
+	emit_signal(\"update_hero\",hero_id, reassigne)
 "
 
 [node name="World" type="TabContainer"]
@@ -34,7 +43,7 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Odd_jobs" parent="Jobs" instance=ExtResource( 1 )]
+[node name="Jobs" parent="Jobs" instance=ExtResource( 1 )]
 
 [node name="Exploration" type="Tabs" parent="."]
 visible = false
@@ -89,3 +98,5 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+
+[connection signal="update_hero" from="Jobs/Jobs" to="." method="_on_Jobs_update_hero"]

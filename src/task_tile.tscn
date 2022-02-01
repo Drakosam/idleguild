@@ -10,11 +10,17 @@ var assigned_pos_3 = -1
 var assigned_pos_4 = -1
 var ingore_event = false
 
-signal refresh_heros(id_hero)
+var hero_req = 1
+var hero_assigned = 0
+var hero_allow = 1
+
+signal refresh_heros(id_hero,reassigne)
+signal harvest_reward( success, resorce, influence, pop)
 
 
 func _ready():
 	update_assigned(true)
+	$ProgressBar.max_value=300
 
 
 func setup_hero_list(new_list):
@@ -23,21 +29,24 @@ func setup_hero_list(new_list):
 	
 
 func refresh_heros_assigned(id_hero):
-	if ingore_event:
+	if ingore_event or id_hero == -1:
 		ingore_event = false
 	elif(assigned_pos_1 == id_hero):
 		$Assigned1.text = \"Assigne\"
+		unassigne_hero(assigned_pos_1, false)
 		assigned_pos_1 = -1
 	elif(assigned_pos_2 == id_hero):
 		$Assigned2.text = \"Assigne\"
+		unassigne_hero(assigned_pos_2, false)
 		assigned_pos_2 = -1
 	elif(assigned_pos_3 == id_hero):
 		$Assigned3.text = \"Assigne\"
+		unassigne_hero(assigned_pos_3, false)
 		assigned_pos_3 = -1
 	elif(assigned_pos_4 == id_hero):
 		$Assigned4.text = \"Assigne\"
+		unassigne_hero(assigned_pos_4, false)
 		assigned_pos_4 = -1
-	
 	update_assigned()
 
 
@@ -59,67 +68,87 @@ func setup_assigned_button(t_button,event_name,up_connect=false):
 	if up_connect:
 		t_button.get_popup().connect(\"id_pressed\",self,event_name)
 	
+
+func time_progress():
+	print(hero_assigned)
+	if hero_assigned >= hero_req:
+		_update_progress(3)
+	if hero_assigned < hero_req and $ProgressBar.value > 0:
+		_update_progress(-1)
+		
+	if assigned_pos_1 > -1 :
+		hero_list[assigned_pos_1].progress = $ProgressBar.value
+	if assigned_pos_2 > -1 :
+		hero_list[assigned_pos_2].progress = $ProgressBar.value
+	if assigned_pos_3 > -1 :
+		hero_list[assigned_pos_3].progress = $ProgressBar.value
+	if assigned_pos_4 > -1 :
+		hero_list[assigned_pos_4].progress = $ProgressBar.value
+
+func _update_progress(value):
+	$ProgressBar.value += value
+	
+	if $ProgressBar.max_value <= $ProgressBar.value:
+		var overflow =  $ProgressBar.value - $ProgressBar.max_value
+		$ProgressBar.value = overflow
+		emit_signal(\"harvest_reward\", true, 5, 0, 0)
+	
+	if $ProgressBar.value < 0:
+		$ProgressBar.value = 0
+		
+	
+func _update_assigne(arg, assigned_butt):
+	if(arg == 0):
+		assigned_butt.text = \"Assigne\"
+	else:
+		assigned_butt.text = hero_list[arg - 1].hero_name
+		hero_list[arg - 1].set_status('Odd job')
+		assigne_hero(arg - 1)
+	ingore_event = true
+	emit_signal(\"refresh_heros\",arg-1, true)
+	
 	
 func _assigne_to_pos_1(arg):
 	if(assigned_pos_1 >= 0):
-			hero_list[assigned_pos_1].set_status('idle')
-	var upvalue = arg
-	if(arg == 0):
-		$Assigned1.text = \"Assigne\"
-		assigned_pos_1 = -1
-	else:
-		$Assigned1.text = hero_list[arg - 1].hero_name
-		hero_list[arg - 1].set_status('Odd job')
-		assigned_pos_1 = hero_list[arg - 1].id
-		upvalue = arg - 1
-	ingore_event = true
-	emit_signal(\"refresh_heros\",upvalue)
+		unassigne_hero(assigned_pos_1)
+	assigned_pos_1 = arg -1
+	_update_assigne(arg, $Assigned1)
 	
 	
 func _assigne_to_pos_2(arg):
 	if(assigned_pos_2 >= 0):
-		hero_list[assigned_pos_2].set_status('idle')
-	var upvalue = arg
-	if(arg == 0):
-		$Assigned2.text = \"Assigne\"
-		assigned_pos_2 = -1
-	else:
-		$Assigned2.text = hero_list[arg - 1].hero_name
-		assigned_pos_2 = hero_list[arg - 1].id
-		upvalue = arg - 1
-	ingore_event = true
-	emit_signal(\"refresh_heros\",upvalue)
+		unassigne_hero(assigned_pos_2)
+	assigned_pos_2 = arg -1
+	_update_assigne(arg, $Assigned2)
 	
 	
 func _assigne_to_pos_3(arg):
 	if(assigned_pos_3 >= 0):
-		hero_list[assigned_pos_3].set_status('idle')
-	var upvalue = arg
-	if(arg == 0):
-		$Assigned3.text = \"Assigne\"
-		assigned_pos_3 = -1
-	else:
-		$Assigned3.text = hero_list[arg - 1].hero_name
-		assigned_pos_3 = hero_list[arg - 1].id
-		upvalue = arg - 1
-	ingore_event = true
-	emit_signal(\"refresh_heros\",upvalue)
+		unassigne_hero(assigned_pos_3)
+	assigned_pos_3 = arg -1
+	_update_assigne(arg, $Assigned3)
 	
 	
 func _assigne_to_pos_4(arg):
 	if(assigned_pos_4 >= 0):
-			hero_list[assigned_pos_4].set_status('idle')
-	var upvalue = arg
-	if(arg == 0):
-		$Assigned4.text = \"Assigne\"
-		assigned_pos_4 = -1
-	else:
-		$Assigned4.text = hero_list[arg - 1].hero_name
-		assigned_pos_4 = hero_list[arg - 1].id
-		upvalue = arg - 1
-	ingore_event = true
-	emit_signal(\"refresh_heros\",upvalue)
+		unassigne_hero(assigned_pos_4)
+	assigned_pos_4 = arg -1
+	_update_assigne(arg, $Assigned4)
 
+
+func assigne_hero(hero_id):
+	hero_list[hero_id].set_status('Odd job')
+	hero_list[hero_id].progress = $ProgressBar.value
+	hero_list[hero_id].progerss_goal = $ProgressBar.max_value
+	hero_assigned +=1
+	
+
+func unassigne_hero(hero_id, update_hero_status = true):
+	hero_assigned -=1 
+	if update_hero_status and hero_id >= 0:
+		hero_list[hero_id].set_status('Idle')
+		hero_list[hero_id].progress = 0
+		emit_signal(\"refresh_heros\", hero_id, false)
 "
 
 [node name="Panel" type="Panel"]

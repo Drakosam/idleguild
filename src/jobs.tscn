@@ -6,35 +6,42 @@
 script/source = "extends Panel
 
 
-var hero_list = []
+signal update_hero(hero_id,reassigne)
 
+var hero_list = []
+var job_list = []
 
 func _ready():
-	pass
+	job_list = [
+		$ScrollContainer/VBoxContainer/Odd_job_1,
+		$ScrollContainer/VBoxContainer/Odd_job_2,
+		$ScrollContainer/VBoxContainer/Odd_job_3,
+		$ScrollContainer/VBoxContainer/Odd_job_4,
+		$ScrollContainer/VBoxContainer/Odd_job_5,
+	]
 
 
 func setup_hero_list(new_list):
 	hero_list = new_list
 	update_hero_list()
 
+func time_progress():
+	for job in job_list:
+		job.time_progress()
 
 
 func update_hero_list():
-	$ScrollContainer/VBoxContainer/Odd_job_1.setup_hero_list(hero_list)
-	$ScrollContainer/VBoxContainer/Odd_job_2.setup_hero_list(hero_list)
-	$ScrollContainer/VBoxContainer/Odd_job_3.setup_hero_list(hero_list)
-	$ScrollContainer/VBoxContainer/Odd_job_4.setup_hero_list(hero_list)
-	$ScrollContainer/VBoxContainer/Odd_job_5.setup_hero_list(hero_list)
+	for job in job_list:
+		job.setup_hero_list(hero_list)
 
 
 
-func _on_Odd_job_refresh_heros(id_hero):
-	print(id_hero)
-	$ScrollContainer/VBoxContainer/Odd_job_1.refresh_heros_assigned(id_hero)
-	$ScrollContainer/VBoxContainer/Odd_job_2.refresh_heros_assigned(id_hero)
-	$ScrollContainer/VBoxContainer/Odd_job_3.refresh_heros_assigned(id_hero)
-	$ScrollContainer/VBoxContainer/Odd_job_4.refresh_heros_assigned(id_hero)
-	$ScrollContainer/VBoxContainer/Odd_job_5.refresh_heros_assigned(id_hero)
+func _on_Odd_job_refresh_heros(id_hero,reassigne):
+	if reassigne:
+		for job in job_list:
+			job.refresh_heros_assigned(id_hero)
+	if id_hero >= 0:
+		emit_signal(\"update_hero\",id_hero,reassigne)
 "
 
 [node name="Odd_jobs" type="Panel"]

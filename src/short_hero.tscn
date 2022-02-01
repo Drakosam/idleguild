@@ -21,6 +21,14 @@ func set_index(new_index):
 
 func get_index():
 	return index
+
+func set_up_progres(value,max_value):
+	$ProgressBar.max_value = max_value
+	$ProgressBar.value = value
+
+func update_progres(value):
+	$ProgressBar.value = value
+	
 "
 
 [node name="short_hero" type="Panel"]

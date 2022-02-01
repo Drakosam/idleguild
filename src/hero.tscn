@@ -8,6 +8,8 @@ export var hero_name = 'Name'
 export var hero_class = ''
 export var id = -1
 export var status = \"Idle\"
+export var progress = 0
+export var progerss_goal = 0
 
 func _ready():
 	pass # Replace with function body.
