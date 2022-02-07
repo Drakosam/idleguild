@@ -60,12 +60,12 @@ func _add_hero_proc(new_hero):
 func _on_Status_refresh_timeout():
 	for item in hero_short_list:
 		item.set_status(hero_list[item.get_index()].get_status())
+	$CanvasLayer/TopPanel/TopBar.update_values(resorce, influence, pop)
 
 
 func _on_Progress_timeout():
 	$CanvasLayer/world_map/World.time_progress()
 	for hero in hero_list:
-		print(hero.status != 'Idle', hero.status)
 		if hero.status != 'Idle':
 			uppdate_hero_progres(hero)
 			
@@ -79,7 +79,8 @@ func _on_World_update_hero(hero_id, reassigne):
 				hero_list[hero_id].progerss_goal
 			)
 			break
-			
+
+
 func uppdate_hero_progres(hero):
 	for item in hero_short_list:
 		if hero.id == item.get_index():
@@ -87,6 +88,12 @@ func uppdate_hero_progres(hero):
 				hero.progress
 			)
 			break
+
+
+func _on_World_update_reward(success, _resorce, _influence, _pop):
+	resorce += _resorce
+	influence += _influence
+	pop += _pop
 "
 
 [node name="Node2D" type="Node2D"]
@@ -176,6 +183,7 @@ autostart = true
 
 [connection signal="show_add_new_hero_panel" from="CanvasLayer/HerosShortDesc/HeroDesc" to="." method="_on_HeroDesc_show_add_new_hero_panel"]
 [connection signal="update_hero" from="CanvasLayer/world_map/World" to="." method="_on_World_update_hero"]
+[connection signal="update_reward" from="CanvasLayer/world_map/World" to="." method="_on_World_update_reward"]
 [connection signal="add_new_hero" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_new_hero_componennt_add_new_hero"]
 [connection signal="go_back_to_world" from="CanvasLayer/new_heros_tab/new_hero_componennt" to="." method="_on_Panel_go_back_to_world"]
 [connection signal="timeout" from="Status_refresh" to="." method="_on_Status_refresh_timeout"]

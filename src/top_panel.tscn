@@ -1,8 +1,23 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+
+func _ready():
+	pass 
+	
+
+func update_values(resorce, influence, pop):
+	$Resorce_value.text = str(resorce)
+	$Population_value.text = str(pop)
+	$Influence_value.text = str(influence)
+"
 
 [node name="Panel" type="Panel"]
 margin_right = 600.0
 margin_bottom = 50.0
+script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

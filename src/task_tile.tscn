@@ -14,13 +14,18 @@ var hero_req = 1
 var hero_assigned = 0
 var hero_allow = 1
 
+var succes_treshold = 100
+
+var rng = RandomNumberGenerator.new()
+
 signal refresh_heros(id_hero,reassigne)
 signal harvest_reward( success, resorce, influence, pop)
 
 
 func _ready():
 	update_assigned(true)
-	$ProgressBar.max_value=300
+	$ProgressBar.max_value=succes_treshold
+	rng.randomize()
 
 
 func setup_hero_list(new_list):
@@ -70,7 +75,6 @@ func setup_assigned_button(t_button,event_name,up_connect=false):
 	
 
 func time_progress():
-	print(hero_assigned)
 	if hero_assigned >= hero_req:
 		_update_progress(3)
 	if hero_assigned < hero_req and $ProgressBar.value > 0:
@@ -91,7 +95,8 @@ func _update_progress(value):
 	if $ProgressBar.max_value <= $ProgressBar.value:
 		var overflow =  $ProgressBar.value - $ProgressBar.max_value
 		$ProgressBar.value = overflow
-		emit_signal(\"harvest_reward\", true, 5, 0, 0)
+		var reward = rng.randi_range(3,8)
+		emit_signal(\"harvest_reward\", true, reward, 0, 0)
 	
 	if $ProgressBar.value < 0:
 		$ProgressBar.value = 0

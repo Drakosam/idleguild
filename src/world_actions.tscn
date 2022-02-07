@@ -6,8 +6,9 @@
 script/source = "extends TabContainer
 
 var hero_list = []
-signal update_hero(hero_id, reassigne)
 
+signal update_hero(hero_id, reassigne)
+signal update_reward(success, resorce, influence, pop)
 
 func _ready():
 	pass # Replace with function body.
@@ -23,6 +24,10 @@ func time_progress():
 
 func _on_Jobs_update_hero(hero_id, reassigne):
 	emit_signal(\"update_hero\",hero_id, reassigne)
+
+
+func _on_Jobs_update_reward(success, resorce, influence, pop):
+	emit_signal('update_reward',success, resorce, influence, pop)
 "
 
 [node name="World" type="TabContainer"]
@@ -100,3 +105,4 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [connection signal="update_hero" from="Jobs/Jobs" to="." method="_on_Jobs_update_hero"]
+[connection signal="update_reward" from="Jobs/Jobs" to="." method="_on_Jobs_update_reward"]
