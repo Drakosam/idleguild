@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Panel
@@ -12,7 +12,7 @@ var ingore_event = false
 
 var hero_req = 1
 var hero_assigned = 0
-var hero_allow = 1
+var hero_allow = 2
 
 var succes_treshold = 100
 
@@ -23,9 +23,24 @@ signal harvest_reward( success, resorce, influence, pop)
 
 
 func _ready():
+	$Script.update_list($Assigned1, $Assigned2, $Assigned3, $Assigned4)
 	update_assigned(true)
 	$ProgressBar.max_value=succes_treshold
 	rng.randomize()
+	_update_user_vis()
+
+
+func update_task_name(_name):
+	$Task_name.text = _name
+
+
+func update_assigne_size(_size):
+	hero_allow = _size
+	_update_user_vis()
+
+
+func _update_user_vis():
+	$Script._update_user_vis(hero_allow)
 
 
 func setup_hero_list(new_list):
@@ -66,7 +81,7 @@ func setup_assigned_button(t_button,event_name,up_connect=false):
 	t_button.get_popup().clear()
 	t_button.get_popup().add_item('unassigned')
 	for hero in hero_list:
-		var str_item ='' + str(hero.hero_name) + ' ( ' + str(hero.hero_class) 
+		var str_item = '' + str(hero.hero_name) + ' ( ' + str(hero.hero_class) 
 		str_item = str_item + ' ) ( ' + str(hero.status) + ' )'
 		t_button.get_popup().add_item(str_item)
 	
@@ -89,6 +104,7 @@ func time_progress():
 	if assigned_pos_4 > -1 :
 		hero_list[assigned_pos_4].progress = $ProgressBar.value
 
+
 func _update_progress(value):
 	$ProgressBar.value += value
 	
@@ -97,7 +113,6 @@ func _update_progress(value):
 		$ProgressBar.value = overflow
 		var reward = rng.randi_range(3,8)
 		emit_signal(\"harvest_reward\", true, reward, 0, 0)
-	
 	if $ProgressBar.value < 0:
 		$ProgressBar.value = 0
 		
@@ -154,6 +169,57 @@ func unassigne_hero(hero_id, update_hero_status = true):
 		hero_list[hero_id].set_status('Idle')
 		hero_list[hero_id].progress = 0
 		emit_signal(\"refresh_heros\", hero_id, false)
+"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node
+
+var assigned1 = null
+var assigned2 = null
+var assigned3 = null
+var assigned4 = null
+
+
+func _ready():
+	pass # Replace with function body.
+
+
+func update_list(ass1, ass2, ass3, ass4):
+	assigned1 = ass1
+	assigned2 = ass2
+	assigned3 = ass3
+	assigned4 = ass4
+
+func _update_user_vis(hero_allow):
+	if hero_allow == 1:
+		assigned1.anchor_right = 1
+		assigned1.margin_bottom = 60
+		assigned1.visible = true
+		assigned2.visible = false
+		assigned3.visible = false
+		assigned4.visible = false
+	elif hero_allow == 2:
+		assigned1.visible = true
+		assigned1.margin_bottom = 50
+		assigned2.visible = true
+		assigned1.anchor_right = 1
+		assigned2.anchor_right = 1
+		assigned3.visible = false
+		assigned4.visible = false
+	elif hero_allow == 3:
+		assigned1.visible = true
+		assigned2.visible = true
+		assigned3.visible = true
+		assigned2.anchor_right = 1
+		assigned1.anchor_right = 0.5
+		assigned4.visible = false
+	else:
+		assigned1.anchor_right = 0.5
+		assigned2.anchor_right = 0.5
+		assigned1.visible = true
+		assigned2.visible = true
+		assigned3.visible = true
+		assigned4.visible = true
 "
 
 [node name="Panel" type="Panel"]
@@ -213,7 +279,6 @@ __meta__ = {
 }
 
 [node name="Assigned2" type="MenuButton" parent="."]
-visible = false
 anchor_right = 0.5
 margin_left = 5.0
 margin_top = 60.0
@@ -227,7 +292,6 @@ __meta__ = {
 }
 
 [node name="Assigned3" type="MenuButton" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_right = 1.0
 margin_left = 5.0
@@ -242,7 +306,6 @@ __meta__ = {
 }
 
 [node name="Assigned4" type="MenuButton" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_right = 1.0
 margin_left = 5.0
@@ -255,3 +318,6 @@ flat = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Script" type="Node" parent="."]
+script = SubResource( 2 )

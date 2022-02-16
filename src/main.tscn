@@ -125,6 +125,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.141176, 0.247059, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TopBar" parent="CanvasLayer/TopPanel" instance=ExtResource( 1 )]
 anchor_right = 1.0

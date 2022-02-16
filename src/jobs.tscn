@@ -12,6 +12,11 @@ signal update_reward(success, resorce, influence, pop)
 var hero_list = []
 var job_list = []
 
+var names_list = [
+	'Odd Job #1', 'Odd Job #2', 'Odd Job #3', 'Odd Job #4', 'Odd Job #5']
+
+var setup_assigne_size = [1,1,1,1,1]
+
 func _ready():
 	job_list = [
 		$ScrollContainer/All_Jobs/Odd_Jobs/Odd_job_1,
@@ -20,6 +25,7 @@ func _ready():
 		$ScrollContainer/All_Jobs/Odd_Jobs/Odd_job_4,
 		$ScrollContainer/All_Jobs/Odd_Jobs/Odd_job_5,
 	]
+	_update_tasks()
 
 
 func setup_hero_list(new_list):
@@ -36,7 +42,6 @@ func update_hero_list():
 		job.setup_hero_list(hero_list)
 
 
-
 func _on_Odd_job_refresh_heros(id_hero,reassigne):
 	if reassigne:
 		for job in job_list:
@@ -47,6 +52,12 @@ func _on_Odd_job_refresh_heros(id_hero,reassigne):
 
 func _on_Odd_job_1_harvest_reward(success, resorce, influence, pop):
 	emit_signal('update_reward',success, resorce, influence, pop)
+	
+func _update_tasks():
+	for task_id in range(job_list.size()):
+		job_list[task_id].update_task_name(names_list[task_id])
+		job_list[task_id].update_assigne_size(setup_assigne_size[task_id])
+
 "
 
 [node name="Odd_jobs" type="Panel"]
